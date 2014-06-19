@@ -10,7 +10,7 @@ a:hover {
 }
 
 h1 {
-    color: $h1-color;
+    // color: $h1-color;
     font-family: $font-family-display!important;
 }
 
@@ -56,7 +56,9 @@ iframe {
 
 header .navbar-brand {
     // padding-top: 15px;
-
+    font-family: $font-family-serif;
+    font-weight: $bold;
+    font-size: 40px;
     img {
         width: 240px;
         height: auto;
@@ -110,7 +112,9 @@ header .navbar-brand {
 
 .masthead {
     background-color: transparent;
-    h2 { color: #ffffff; }
+    h1, h2, h3, h4, h5, h6 { color: #ffffff; line-height: 0.75; }
+    p { color: $brand-light; }
+    // p.lead { margin-top: 0; }
 }
 
 // Sidebar Feature Image /////////////////////////////////////////////////////////////////

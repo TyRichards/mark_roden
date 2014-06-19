@@ -42,7 +42,7 @@
 		<!--wordpress footer-->
 		<?php wp_footer(); ?> 
 		<!-- Typekit -->
-		<script type="text/javascript" src="//use.typekit.net/jph8qdt.js"></script>
+		<script type="text/javascript" src="//use.typekit.net/nkg3euk.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</body>
 </html>

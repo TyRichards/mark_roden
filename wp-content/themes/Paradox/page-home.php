@@ -7,13 +7,16 @@ Template Name: Home
 <?php get_header(); ?>
 
 <section class="masthead">
-    <div class="background">&nbsp;</div>
+    <!-- <div class="background">&nbsp;</div> -->
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="text-center"><?php bloginfo('description'); ?></h2>  
-                <div class="text-center" style="margin-top:25px">
-                    <a href="#home"><i class="fa fa-chevron-down fa-3x"></i></a>
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1><?php echo get_field('headline') ?></h1>
+                <p><?php echo get_field('subheading') ?></p>  
+                <div style="margin-top:25px">                    
+                    <a href="/blog" class="btn btn-lg btn-success"><i class="fa fa-eye fa-left"></i>Read My Blog</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/schedule" class="btn btn-lg btn-success"><i class="fa fa-coffee fa-left"></i>Let's do coffee</a>                    
                 </div>              
             </div>
         </div>

@@ -34,9 +34,9 @@
 			<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 		<![endif]-->	
 
-		<div id="bg">
+<!-- 		<div id="bg">
 			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/bg.jpg" alt="Sullivan Chimney Sweep">
-		</div>				
+		</div>		 -->		
 		
 		<?php do_action('before'); ?> 
 		<header>				
@@ -52,13 +52,16 @@
 							</button>
 							<a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>">
 								<?php // echo esc_attr(get_bloginfo('name', 'display')); ?>
-								<img style="max-width:210px; margin-top: -33px;" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png">
+								<img style="max-width:241px; margin-top: -33px;" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png">
 							</a>					
 						</div>						
 						<div class="collapse navbar-collapse navbar-primary-collapse">
-							<a class="btn btn-primary navbar-btn navbar-right hidden-xs" href="/schedule-inspection">
-								<i class="fa fa-phone fa-left"></i>Call (817) 914-4898
-							</a>     							
+							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">
+								Schedule Session
+							</a>  							
+<!-- 							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">
+								(972) 898-8063
+							</a>    -->  							
 							<?php wp_nav_menu(array('theme_location' => 'primary', 'container' => false, 'menu_class' => 'nav navbar-nav navbar-right', 'walker' => new BootstrapBasicMyWalkerNavMenu())); ?>
 						</div><!--.navbar-collapse-->
 					</div>
