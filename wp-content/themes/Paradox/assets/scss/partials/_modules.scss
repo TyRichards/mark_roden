@@ -4,6 +4,10 @@ a {
     @include transition(all 0.2s ease-in);    
 }
 
+hr {
+    border-top: 1px solid $gray-light;
+}
+
 a:hover {
     text-decoration: none;
     @include transition(all 0.2s ease-out);
@@ -472,7 +476,7 @@ width: 49%;
                     right: 0;
                 }            
             }
-            div.page-id-5 {
+            .page-id-5, .page-id-7, .page-id-100 {
                 img {
                     height: 700px!important;                    
                 }
