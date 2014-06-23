@@ -89,13 +89,22 @@ function bootstrapBasicWidgetsInit()
 	// ));
 	
 	register_sidebar(array(
-		'name'          => __('Sidebar Default', 'bootstrap-basic'),
+		'name'          => __('Default Sidebar', 'bootstrap-basic'),
 		'id'            => 'sidebar-default',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
 	));
+
+	register_sidebar(array(
+		'name'          => __('Blog Sidebar', 'bootstrap-basic'),
+		'id'            => 'sidebar-blog',
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</aside>',
+		'before_title'  => '<h3 class="widget-title">',
+		'after_title'   => '</h3>',
+	));	
 
 	// register_sidebar(array(
 	// 	'name'          => __('Large Footer Col 1', 'bootstrap-basic'),

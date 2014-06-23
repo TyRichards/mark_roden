@@ -4,17 +4,16 @@
  * 
  * @package bootstrap-basic
  */
-
-get_header();
-
-/**
- * determine main column size from actived sidebar
- */
-$main_column_size = bootstrapBasicGetMainColumnSize();
 ?>
-<?php get_sidebar('left'); ?> 
-				<div class="col-md-<?php echo $main_column_size; ?> content-area" id="main-column">
-					<main id="main" class="site-main" role="main">
+
+<?php get_header(); ?>
+
+<section class="primary-content">
+    <div class="container-fluid">        
+        <div class="row">         	
+            <main class="col-sm-9 main-col page-content">                
+                <div id="main" class="site-main row" role="main">
+                	<div class="col-sm-8 col-sm-offset-2">
 						<?php if (have_posts()) { ?> 
 						<?php 
 						// start the loop
@@ -32,8 +31,19 @@ $main_column_size = bootstrapBasicGetMainColumnSize();
 						?> 
 						<?php } else { ?> 
 						<?php get_template_part('no-results', 'index'); ?>
-						<?php } // endif; ?> 
-					</main>
-				</div>
-<?php get_sidebar('right'); ?> 
+						<?php } // endif; ?>
+					</div>
+                </div>           
+            </main>
+		    <aside class="col-sm-3 sidebar" style="background-color:#bbbbbb">		        
+                <div class="row">
+                	<div class="col-sm-8 col-sm-offset-2">
+                    	<?php dynamic_sidebar('sidebar-blog'); ?> 
+                    </div>
+                </div>
+		    </aside>               
+        </div>      
+    </div>
+</section>		
+ 
 <?php get_footer(); ?> 

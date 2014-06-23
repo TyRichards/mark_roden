@@ -90,6 +90,12 @@ header .navbar-brand {
     z-index: 2;
 }
 
+.sidebar {
+    padding-bottom: 2000px;
+    margin-bottom: -2000px;
+    overflow: auto;    
+}
+
 // Body BG //////////////////////////////////////////////////////////////////
 
 #bg {
@@ -240,6 +246,12 @@ color: #ffffff!important;
         padding: 14px 0px;
     }
 }
+
+// Blog
+
+.entry-meta { @extend .subhead; margin-top: 25px!important; }
+
+.blog .primary-content { padding-top: 0px; }
 
 // Small-Footer Navigation Menus /////////////////////////////////////////////////////////////////
 
@@ -425,6 +437,7 @@ width: 49%;
 // Sidebar /////////////////////////////////////////////////////////////////
 
 .primary-content {
+    z-index: -1;
     background-color: #ffffff;
     position: relative;
     .sidebar.background {
@@ -527,6 +540,7 @@ width: 49%;
 
 .footer {
     background-color: $footer-bg-color;
+    z-index: 50;
 }
 
 // Video Player /////////////////////////////////////////////////////////////////
