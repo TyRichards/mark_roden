@@ -56,7 +56,10 @@
 							</a>					
 						</div>						
 						<div class="collapse navbar-collapse navbar-primary-collapse">
-							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">
+<!-- 							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">
+								(972) 898-8063
+							</a>   -->
+							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="/schedule">
 								Schedule Session
 							</a>  							
 <!-- 							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">

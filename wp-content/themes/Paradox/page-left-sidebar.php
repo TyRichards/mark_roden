@@ -7,6 +7,26 @@ Template Name: Left Sidebar
 <?php get_header(); ?>
 
 <section class="primary-content">
+    <div class="sidebar background landscape">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div <?php body_class(); ?>>
+                        <!-- <img src="startup/common-files/img/content/landscape.jpg" alt=""> -->
+                        <?php 
+                            if ( has_post_thumbnail() ) { // check if the post has a Post Thumbnail assigned to it.
+                            the_post_thumbnail('sidebar-thumb', array('class' => '' ));
+                            } 
+                            else {
+                                ?><img src="<?php echo get_template_directory_uri(); ?>/assets/images/sidebar-default.jpg" class="feature-image attachment-sidebar-thumb wp-post-image col-md-9 col-no-padding" alt="<?php wp_title('|', true, 'right'); ?>"><?php
+                            }
+                        ?> 
+                        <?php get_sidebar('default'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
     <div class="container col-no-padding-xs">        
         <div class="row">
             <section class="main-col page-content col-sm-7 col-sm-push-5 container">                
@@ -30,17 +50,7 @@ Template Name: Left Sidebar
                     ?> 
                 </div>           
             </section>
-        </div>
-        <section class="sidebar-col sidebar sidebar-left col-sm-5 col-sm-pull-7">
-            <div class="col-sm-10 col-no-padding-xs">
-                <?php 
-                    if ( has_post_thumbnail() ) { // check if the post has a Post Thumbnail assigned to it.
-                    the_post_thumbnail('sidebar-thumb', array('class' => 'feature-image attachment-sidebar-thumb img-rounded' ));
-                    } 
-                ?>                  
-                <?php get_sidebar('default'); ?>       
-            </div>                       
-        </section>        
+        </div>      
     </div>
 </section>
 

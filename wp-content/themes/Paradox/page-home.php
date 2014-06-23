@@ -14,7 +14,7 @@ Template Name: Home
                 <h1><?php echo get_field('headline') ?></h1>
                 <p><?php echo get_field('subheading') ?></p>  
                 <div style="margin-top:25px">                    
-                    <a href="/blog" class="btn btn-lg btn-success"><i class="fa fa-eye fa-left"></i>Read My Blog</a>
+                    <a href="/blog" class="btn btn-lg btn-success"><i class="fa fa-search fa-left"></i>Read My Blog</a>
                     &nbsp;&nbsp;&nbsp;
                     <a href="/schedule" class="btn btn-lg btn-success"><i class="fa fa-coffee fa-left"></i>Let's do coffee</a>                    
                 </div>              
@@ -35,7 +35,7 @@ Template Name: Home
                             the_post_thumbnail('sidebar-thumb', array('class' => '' ));
                             } 
                             else {
-                                ?><img src="<?php echo get_template_directory_uri(); ?>/assets/images/sidebar-default.jpg" class="feature-image attachment-sidebar-thumb wp-post-image img-rounded col-md-9 col-no-padding" alt="<?php wp_title('|', true, 'right'); ?>"><?php
+                                ?><img src="<?php echo get_template_directory_uri(); ?>/assets/images/sidebar-default.jpg" class="feature-image attachment-sidebar-thumb wp-post-image col-md-9 col-no-padding" alt="<?php wp_title('|', true, 'right'); ?>"><?php
                             }
                         ?> 
                         <?php get_sidebar('default'); ?>
