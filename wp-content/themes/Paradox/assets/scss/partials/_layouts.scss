@@ -9,6 +9,11 @@ body > header {
 
 // Top Header Section /////////////////////////////////////////////////////////////////
 
+.top-navbar {
+    padding-top: $space-lg;
+    padding-bottom: $space-lg;    
+}
+
 .top-header {
     padding-top: $space-sm;
     padding-bottom: $space-sm;
@@ -29,7 +34,7 @@ body > header {
     // background: image-url('cream_dust.png') repeat;
 
     .masthead, .primary-content, .block-section {
-        border-bottom: 1px solid darken($body-bg, 10%);             
+        
     }    
 }
 
@@ -60,7 +65,14 @@ body > header {
 // Small Footer Section /////////////////////////////////////////////////////////////////
 
 .small-footer {
-    border-top: 1px solid darken($footer-bg-color, 10%);
+    padding: $space-lg-vert;
+
+    ul, ol, p {
+        margin-bottom: 0;
+    }
+}
+
+.credit-footer {
     padding: $space-sm-vert;
 
     ul, ol, p {

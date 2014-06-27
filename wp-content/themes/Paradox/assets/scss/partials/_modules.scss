@@ -20,8 +20,8 @@ h1 {
 
 ul li {
     // counter-increment: foo;
-    display: table-row;
-    list-style: none;
+    // display: table-row;
+    // list-style: none;
 }
 
 ol {
@@ -31,6 +31,31 @@ ol {
 
 ol, ul {
     margin-bottom: 0px;
+    list-style-position: outside;
+}
+
+.sidebar ul, .sidebar ol, 
+.main-col ul, .main-col ol { 
+    padding-left: 20px; 
+    li {
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+}
+
+.fa-right { margin-left: 15px; margin-right: 0!important; }
+.fa-left { margin-left: 0!important; margin-right: 15px; }
+
+select { 
+    @extend .form-control;
+}
+
+.small { line-height: 1.5; }
+
+.list-inline > li {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 button:focus {
@@ -39,8 +64,8 @@ outline: none;
 
 li::before {
     // content: counter(foo) ".";
-    display: table-cell; /* aha! */
-    text-align: right;
+    // display: table-cell; /* aha! */
+    // text-align: right;
 }
 
 iframe {
@@ -91,10 +116,25 @@ header .navbar-brand {
 }
 
 .sidebar {
-    padding-bottom: 2000px;
-    margin-bottom: -2000px;
-    overflow: auto;    
+    // padding-bottom: 2000px;
+    // margin-bottom: -2000px;
+    // overflow: auto;   
+    @extend .small; 
+    background-color: $gray-lighter;
+    line-height
+    h1, h2, h3, h4, h5, h6 { margin-top: 0; }
+    .gform_wrapper { margin-top: 10px!important; }
+    .gform_fields { margin-top: 20px; }
+    .gform_button { margin-top: 0px!important; }
+    .validation_error { display: none; }
+    .validation_message { display: none; }
 }
+
+.more-link { margin-top: 0!important; }
+
+.blog .sidebar, .single-post .sidebar { padding: 30px; }
+
+.background-dark { background-color: $brand-dark!important; }
 
 // Body BG //////////////////////////////////////////////////////////////////
 
@@ -123,6 +163,7 @@ header .navbar-brand {
 .masthead {
     background-color: transparent;
     h1, h2, h3, h4, h5, h6 { color: #ffffff; line-height: 0.75; }
+    h1 { margin-top: 0; }
     p { color: $brand-light; }
     // p.lead { margin-top: 0; }
 }
@@ -136,6 +177,10 @@ header .navbar-brand {
 }
 
 // Buttons /////////////////////////////////////////////////////////////////
+
+.btn, .button, .gform_button {
+    @include border-radius(50px);
+}
 
 .body-content .btn {
 margin: $paragraph-top-margin;
@@ -178,6 +223,7 @@ border-color: $btn-secondary-border;
 
 .nav > .menu-item > a {
     font-weight: 500;
+    @include border-radius(50px);
 }
 
 .navbar {
@@ -251,7 +297,13 @@ color: #ffffff!important;
 
 .entry-meta { @extend .subhead; margin-top: 25px!important; }
 
-.blog .primary-content { padding-top: 0px; }
+.blog footer.entry-meta { display: none; }
+
+article.post {
+    margin-bottom: 40px;
+    border-bottom: 1px solid $gray-light;
+    padding-bottom: 40px;
+}
 
 // Small-Footer Navigation Menus /////////////////////////////////////////////////////////////////
 
@@ -262,22 +314,22 @@ color: #ffffff!important;
 
 .small-footer {
     background: $navbar-default-bg;
-
-    a {
-        display: block;
-        text-align: center;
-    }
-
-    .footer-credits {
-        width: 100%;
-    }
-    
+    a { display: block; text-align: center; }    
     .footer-menu {
         width: 100%;
 
         .menu li a {
             font-size: $font-size-small;
         }
+    }
+}
+
+.footer-credits {
+    width: 100%;
+    font-size: 85%;
+    a { 
+        color: $brand-light; 
+        &:hover { color: #ffffff;} 
     }
 }
 
@@ -293,8 +345,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0px;
 }
 
-.entry-content h1 {
-    margin-top: 0px;
+.entry-content h1,
+.entry-title,
+.page-id-4 h2 {
+    margin-top: 0;
 }
 
 .site-main {
@@ -346,8 +400,8 @@ h1, h2, h3, h4, h5, h6 {
 .body-content {
 
     ul li:before {
-        font-family: 'FontAwesome';
-        content: "\f054";
+        // font-family: 'FontAwesome';
+        // content: "\f054";
         padding-right: 15px;        
         color: $list-bullet-color;
     }
@@ -360,8 +414,9 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: 8px;
 }
 
-.gform_wrapper .gform_button {
-    @extend .btn-primary    
+.gform_wrapper .gform_button,
+.more-link {
+    @extend .btn-success, .btn;    
 }
 
 
@@ -426,7 +481,6 @@ width: 49%;
     p, ul, ol {
         margin: $paragraph-top-margin;
     }
-    ul { padding-left: 0 }
 }
 
 .lead {
@@ -437,7 +491,7 @@ width: 49%;
 // Sidebar /////////////////////////////////////////////////////////////////
 
 .primary-content {
-    z-index: -1;
+    z-index: 0;
     background-color: #ffffff;
     position: relative;
     .sidebar.background {
@@ -452,7 +506,7 @@ width: 49%;
         top: 0;
         right: 0;
         bottom: 0;
-        z-index: 1;
+        // z-index: 1;
         background: 50% 50% no-repeat;
         -webkit-background-size: cover;
         -moz-background-size: cover;
@@ -490,14 +544,10 @@ width: 49%;
                 }            
             }
             .page-id-5, .page-id-7, .page-id-100 {
-                img {
-                    height: 700px!important;                    
-                }
+                img { height: 700px!important; }
             }
-
         }
     }
-
 }
 
 // Widgets /////////////////////////////////////////////////////////////////
@@ -539,8 +589,9 @@ width: 49%;
 // Footer /////////////////////////////////////////////////////////////////
 
 .footer {
-    background-color: $footer-bg-color;
-    z-index: 50;
+    background-color: $brand-primary;
+    z-index: 1000;
+    color: $brand-light;
 }
 
 // Video Player /////////////////////////////////////////////////////////////////

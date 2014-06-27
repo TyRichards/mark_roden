@@ -56,15 +56,14 @@
 							</a>					
 						</div>						
 						<div class="collapse navbar-collapse navbar-primary-collapse">
-<!-- 							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">
-								(972) 898-8063
-							</a>   -->
-							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="/schedule">
-								Schedule Session
-							</a>  							
-<!-- 							<a class="btn btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063">
-								(972) 898-8063
-							</a>    -->  							
+							<div class="btn-header">
+								<a class="btn btn-sm btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063" style="margin-left:10px;">
+									(972) 898-8063
+								</a>  
+								<a class="btn btn-sm btn-success navbar-btn navbar-right hidden-xs" href="/schedule">
+									Schedule Session
+								</a>  													   							
+							</div>
 							<?php wp_nav_menu(array('theme_location' => 'primary', 'container' => false, 'menu_class' => 'nav navbar-nav navbar-right', 'walker' => new BootstrapBasicMyWalkerNavMenu())); ?>
 						</div><!--.navbar-collapse-->
 					</div>
