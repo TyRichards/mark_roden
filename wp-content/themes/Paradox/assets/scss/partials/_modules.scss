@@ -1,16 +1,15 @@
 // Base Styles /////////////////////////////////////////////////////////////////
 
-a {
-    @include transition(all 0.2s ease-in);    
+a, .button, .gform_button, .btn {
+    @include transition(all 0.2s ease-in);  
+    &:hover  {
+        text-decoration: none;
+        @include transition(all 0.2s ease-out);
+    }
 }
 
 hr {
     border-top: 1px solid $gray-light;
-}
-
-a:hover {
-    text-decoration: none;
-    @include transition(all 0.2s ease-out);
 }
 
 h1 {
@@ -43,6 +42,12 @@ ol, ul {
     }
 }
 
+input, select, textarea { 
+    @extend .form-control; 
+    font-size: inherit!important;
+    padding: 0 8px 0 8px!important;
+}
+
 .fa-right { margin-left: 15px; margin-right: 0!important; }
 .fa-left { margin-left: 0!important; margin-right: 15px; }
 
@@ -51,6 +56,12 @@ select {
 }
 
 .small { line-height: 1.5; }
+
+.well { margin-top: 30px; }
+
+.blog, .archive {
+    .main-col .well { display: none }
+}
 
 .list-inline > li {
     display: inline-block;
@@ -132,7 +143,7 @@ header .navbar-brand {
 
 .more-link { margin-top: 0!important; }
 
-.blog .sidebar, .single-post .sidebar { padding: 30px; }
+.sidebar-box { padding: 30px; }
 
 .background-dark { background-color: $brand-dark!important; }
 
@@ -295,9 +306,25 @@ color: #ffffff!important;
 
 // Blog
 
+.page-header {
+    margin: 0 0 40px 0;
+    border: none;
+}
+
 .entry-meta { @extend .subhead; margin-top: 25px!important; }
 
-.blog footer.entry-meta { display: none; }
+.blog, .archive {
+    footer.entry-meta { display: none; }
+} 
+
+.archive .page-title {
+    @extend .btn, .btn-lg, .btn-primary, .btn-block;
+    margin: 0!important;
+    &:hover {
+        background-color: $brand-primary;
+        border-color: darken($btn-primary-bg, 5%);
+    }
+}
 
 article.post {
     margin-bottom: 40px;
@@ -408,21 +435,48 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 // Gravity Forms
+.ginput_complex {
+    input, select { margin-bottom: 10px; }
+}
+
+body .gform_wrapper .gfield_time_hour, body .gform_wrapper .gfield_time_minute, body .gform_wrapper .gfield_date_month, body .gform_wrapper .gfield_date_day, body .gform_wrapper .gfield_date_year {
+    width: 62px;
+    line-height: 2.5;
+}
+
+body .gform_wrapper .gfield_time_hour input, body .gform_wrapper .gfield_time_minute input, body .gform_wrapper .gfield_date_month input, body .gform_wrapper .gfield_date_day input, body .gform_wrapper .gfield_date_year input {
+    width: 78%!important; 
+    display: inline;
+}
+
+body .gform_wrapper .gfield_time_ampm select {
+    width: 70px !important;
+}
+
+body .gform_wrapper .top_label input.medium, .gform_wrapper .top_label select.medium { width: 100%; }
+
+.gform_wrapper ul { padding-left: inherit; }
 
 .ginput_container input, .ginput_container select, .ginput_container textarea {
     padding-left: 8px;
     padding-right: 8px;
 }
 
-.gform_wrapper .gform_button,
-.more-link {
-    @extend .btn-success, .btn;    
+.gform_wrapper .gform_button, .more-link { @extend .btn-success, .btn; }
+
+.main-col #gform_wrapper_5 {
+    .gform_button, .gform_title { margin-top: 0; }
 }
 
+body .gform_heading h3.gform_title { font-size: $font-size-h2!important; }
 
+body .gform_wrapper .gform_footer {
+    padding: 0 0 10px 0;
+    margin: 0;
+    clear: both;
+}
 
 .body-content .gform_body {
-
     ul li:before {
         font-family: inherit;
         content: none;

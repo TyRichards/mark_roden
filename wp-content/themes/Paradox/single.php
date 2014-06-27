@@ -36,7 +36,7 @@
 					?> 
 				</div>
 			</main>
-		    <aside class="col-md-4 col-md-offset-1 col-lg-3 col-lg-offset-1 sidebar">		        
+		    <aside class="col-md-4 col-md-offset-1 col-lg-3 col-lg-offset-1 sidebar sidebar-box">		        
             	<?php dynamic_sidebar('sidebar-blog'); ?>                     
 		    </aside>    			
 		</div>

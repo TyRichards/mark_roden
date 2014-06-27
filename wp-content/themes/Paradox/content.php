@@ -33,7 +33,10 @@
 	</div><!-- .entry-content -->
 	<?php } //endif; ?> 
 
-	
+	<div class="well well-lg text-center">
+			<?php gravity_form(5, true, true, false, null, true, 50); ?>
+	</div>	
+
 	<footer class="entry-meta">
 		<?php if ('post' == get_post_type()) { // Hide category and tag text for pages on Search ?> 
 		<div class="entry-meta-category-tag">
@@ -59,12 +62,12 @@
 		</div><!--.entry-meta-category-tag-->
 		<?php } // End if 'post' == get_post_type() ?> 
 
-		<div class="entry-meta-comment-tools">
+<!-- 		<div class="entry-meta-comment-tools">
 			<?php if (! post_password_required() && (comments_open() || '0' != get_comments_number())) { ?> 
 			<span class="comments-link"><?php bootstrapBasicCommentsPopupLink(); ?></span>
 			<?php } //endif; ?> 
 
 			<?php bootstrapBasicEditPostLink(); ?> 
-		</div><!--.entry-meta-comment-tools-->
+		</div> --><!--.entry-meta-comment-tools-->
 	</footer><!-- .entry-meta -->
 </article><!-- #post-## -->
