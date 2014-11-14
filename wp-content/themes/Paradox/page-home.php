@@ -10,15 +10,18 @@ Template Name: Home
     <!-- <div class="background">&nbsp;</div> -->
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 text-center">
+            <div class="col-md-8 text-center">
                 <h1><?php echo get_field('headline') ?></h1>
                 <p><?php echo get_field('subheading') ?></p>  
                 <div style="margin-top:25px">                    
-                    <a href="/blog" class="btn btn-lg btn-success"><i class="fa fa-search fa-left"></i>Read My Blog</a>
+                    <a href="/blog" class="btn btn-lg btn-secondary"><i class="fa fa-search fa-left"></i>Read My Blog</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/schedule" class="btn btn-lg btn-success"><i class="fa fa-coffee fa-left"></i>Let's do coffee</a>                    
+                    <a href="/schedule" class="btn btn-lg btn-secondary"><i class="fa fa-coffee fa-left"></i>Let's do coffee</a>                    
                 </div>              
             </div>
+            <div class="col-md-4 text-center">
+                <img class="img-responsive" src="<?php echo get_template_directory_uri(); ?>/assets/images/mark.png" alt="<?php bloginfo('description'); ?>">
+            </div>                
         </div>
     </div>
 </section>

@@ -42,7 +42,7 @@
 		<header>				
 			<section class="top-navbar">				
 				<nav class="navbar navbar-default" role="navigation">
-					<div class="container">						
+					<div class="container-fluid">						
 						<div class="navbar-header">																	
 							<button type="button" class="navbar-toggle navbar-right" data-toggle="collapse" data-target=".navbar-primary-collapse">
 								<span class="sr-only"><?php _e('Toggle navigation', 'bootstrap-basic'); ?></span>
@@ -52,18 +52,18 @@
 							</button>
 							<a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>">
 								<?php // echo esc_attr(get_bloginfo('name', 'display')); ?>
-								<img style="max-width:241px; margin-top: -33px;" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png">
+								<img style="max-width:454px;" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png">
 							</a>					
 						</div>						
 						<div class="collapse navbar-collapse navbar-primary-collapse">
 							<div class="btn-header">
-								<a class="btn btn-sm btn-success navbar-btn navbar-right hidden-xs" href="tel:9728988063" style="margin-left:10px;">
+<!-- 								<a class="btn btn-sm btn-secondary navbar-btn navbar-right hidden-xs" href="tel:9728988063" style="margin-left:10px;">
 									(972) 898-8063
 								</a>  
-								<a class="btn btn-sm btn-success navbar-btn navbar-right hidden-xs" href="/schedule">
+								<a class="btn btn-sm btn-secondary navbar-btn navbar-right hidden-xs" href="/schedule">
 									Schedule Session
 								</a>  													   							
-							</div>
+							</div> -->
 							<?php wp_nav_menu(array('theme_location' => 'primary', 'container' => false, 'menu_class' => 'nav navbar-nav navbar-right', 'walker' => new BootstrapBasicMyWalkerNavMenu())); ?>
 						</div><!--.navbar-collapse-->
 					</div>
