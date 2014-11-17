@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Authorize.Net Add-On
 Plugin URI: http://www.gravityforms.com
 Description: Integrates Gravity Forms with Authorize.Net, enabling end users to purchase goods and services through Gravity Forms.
-Version: 1.5
+Version: 1.6
 Author: rocketgenius
 Author URI: http://www.rocketgenius.com
 
@@ -28,8 +28,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 add_action('init',  array('GFAuthorizeNet', 'init'));
 
-//limits currency to US Dollars
-add_filter("gform_currency", create_function("","return 'USD';"));
+//limits currency to US Dollars, Pound Sterling, and Euro
+add_filter("gform_currencies", array('GFAuthorizeNet', 'auth_net_currencies'));
+
 add_action("renewal_cron", array("GFAuthorizeNet", "process_renewals"));
 
 register_activation_hook( __FILE__, array("GFAuthorizeNet", "add_permissions"));
@@ -39,7 +40,7 @@ class GFAuthorizeNet {
     private static $path = "gravityformsauthorizenet/authorizenet.php";
     private static $url = "http://www.gravityforms.com";
     private static $slug = "gravityformsauthorizenet";
-    private static $version = "1.5";
+    private static $version = "1.6";
     private static $min_gravityforms_version = "1.7";
     public static $transaction_response = "";
     private static $supported_fields = array("checkbox", "radio", "select", "text", "website", "textarea", "email", "hidden", "number", "phone", "multiselect", "post_title",
@@ -50,8 +51,6 @@ class GFAuthorizeNet {
 
         //runs the setup when version changes
         self::setup();
-
-        self::process_renewals();
 
         //supports logging
         add_filter("gform_logging_supported", array("GFAuthorizeNet", "set_logging_supported"));
@@ -123,8 +122,7 @@ class GFAuthorizeNet {
             }
             else if(RGForms::get("page") == "gf_settings"){
                 RGForms::add_settings_page("Authorize.Net", array("GFAuthorizeNet", "settings_page"), self::get_base_url() . "/images/authorizenet_wordpress_icon_32.png");
-                add_filter("gform_currency_setting_message", create_function("","echo '<div class=\'gform_currency_message\'>Authorize.Net only supports US Dollars.</div>';"));
-                add_filter("gform_currency_disabled", "__return_true");
+                add_filter("gform_currency_setting_message", create_function("","echo '<div class=\'gform_currency_message\'>Authorize.Net only supports US Dollars, Pound Sterling, and Euro.</div>';"));
             }
             else if(RGForms::get("page") == "gf_entries"){
                 add_action('gform_entry_info',array("GFAuthorizeNet", "authorizenet_entry_info"), 10, 2);
@@ -137,7 +135,53 @@ class GFAuthorizeNet {
             //handling post submission.
             add_filter('gform_validation',array("GFAuthorizeNet", "authorizenet_validation"), 10, 4);
             add_action('gform_entry_post_save',array("GFAuthorizeNet", "authorizenet_commit_transaction"), 10, 2);
+
+            // ManageWP premium update filters
+            add_filter( 'mwp_premium_update_notification', array('GFAuthorizeNet', 'premium_update_push') );
+            add_filter( 'mwp_premium_perform_update', array('GFAuthorizeNet', 'premium_update') );
+
         }
+    }
+
+
+    //-------------------- MANAGE WP INTEGRATION -------------------------------------------------
+
+    //Integration with ManageWP
+    public static function premium_update_push( $premium_update ){
+
+        if( !function_exists( 'get_plugin_data' ) )
+            include_once( ABSPATH.'wp-admin/includes/plugin.php');
+
+        $update = GFCommon::get_version_info();
+        $update = $update["offerings"][self::$slug];
+        if( $update["is_available"] == true && version_compare(self::$version, $update["version"], '<') ){
+            $plugin_data = get_plugin_data( __FILE__ );
+            $plugin_data['type'] = 'plugin';
+            $plugin_data['slug'] = self::$path;
+            $plugin_data['new_version'] = isset($update['version']) ? $update['version'] : false ;
+            $premium_update[] = $plugin_data;
+        }
+
+        return $premium_update;
+    }
+
+    //Integration with ManageWP
+    public static function premium_update( $premium_update ){
+
+        if( !function_exists( 'get_plugin_data' ) )
+            include_once( ABSPATH.'wp-admin/includes/plugin.php');
+
+        $update = GFCommon::get_version_info();
+        $update = $update["offerings"][self::$slug];
+        if( $update["is_available"] == true && version_compare(self::$version, $update["version"], '<') ){
+            $plugin_data = get_plugin_data( __FILE__ );
+            $plugin_data['slug'] = self::$path;
+            $plugin_data['type'] = 'plugin';
+            $plugin_data['url'] = isset($update["url"]) ? $update["url"] : false; // OR provide your own callback function for managing the update
+
+            array_push($premium_update, $plugin_data);
+        }
+        return $premium_update;
     }
 
 
@@ -151,9 +195,15 @@ class GFAuthorizeNet {
         if(!$config)
             return $validation_result;
 
+        self::log_debug( "Starting to process feed for form (#{$form['id']}) submission." );
+
         //getting submitted data from fields
         $form_data = self::get_form_data($form, $config);
-        $initial_payment_amount = $form_data["amount"] + absint(rgar($form_data,"fee_amount"));
+        
+        if(empty($form_data["card_name"]))
+            return self::set_failed_credit_card_validation($form_data, $validation_result);
+        
+        $initial_payment_amount = $form_data["amount"] + floatval(rgar($form_data,"fee_amount"));
 
         //don't process payment if initial payment is 0, but act as if the transaction was successful
         if($initial_payment_amount == 0){
@@ -172,6 +222,27 @@ class GFAuthorizeNet {
 
         return $validation_result;
     }
+    
+    private static function set_failed_credit_card_validation($form_data, $validation_result){
+        
+        $credit_card_page = 0;
+        foreach($validation_result["form"]["fields"] as &$field)
+        {
+            if($field["type"] == "creditcard")
+            {
+                $field["failed_validation"] = true;
+                $field["validation_message"] = "Please enter cardholder's name.";
+                $credit_card_page = $field["pageNumber"];
+                break;
+             }
+
+        }
+        $validation_result["is_valid"] = false;
+
+        GFFormDisplay::set_current_page($validation_result["form"]["id"], $credit_card_page);
+        
+        return $validation_result;
+    }
 
     private static function authorize_credit_card($form_data, $config, $validation_result){
 
@@ -182,7 +253,8 @@ class GFAuthorizeNet {
         self::log_debug("Authorizing credit card...");
 
         //Doing an authorization to make sure credit card is valid
-        $auth_amount = $form_data["amount"] + absint($form_data["fee_amount"]);
+        $auth_amount = apply_filters("gform_authorizenet_amount_pre_authorize", $form_data["amount"] + floatval($form_data["fee_amount"]), $transaction, $form_data, $config, $validation_result["form"]);
+
         $auth_response = $transaction->authorizeOnly($auth_amount);
 
         self::log_debug("Authorization response: ");
@@ -227,12 +299,13 @@ class GFAuthorizeNet {
 
     private static function get_subscription($config, $form_data, $invoice_number){
 
+        self::include_api();
         $subscription = new AuthorizeNet_Subscription;
 
         //getting trial information
         $trial_info = self::get_trial_info($config);
 
-        $total_occurrences = $config["meta"]["recurring_times"] == "Infinite" ? "9999" : $config["meta"]["recurring_times"];
+        $total_occurrences = empty($config["meta"]["recurring_times"]) || $config["meta"]["recurring_times"] == "Infinite" ? "9999" : $config["meta"]["recurring_times"];
         if($total_occurrences <> "9999")
             $total_occurrences += $trial_info["trial_occurrences"];
 
@@ -248,7 +321,7 @@ class GFAuthorizeNet {
         $subscription->startDate = gmdate("Y-m-d");
         $subscription->totalOccurrences = $total_occurrences;
         $subscription->amount = $form_data["amount"];
-        $subscription->creditCardCardNumber = $form_data["card_number"];
+        $subscription->creditCardCardNumber = self::remove_spaces_cc($form_data["card_number"]);
         $exp_date = $form_data["expiration_date"][1] . "-" . str_pad($form_data["expiration_date"][0], 2, "0", STR_PAD_LEFT);
         $subscription->creditCardExpirationDate = $exp_date;
         $subscription->creditCardCardCode = $form_data["security_code"];
@@ -265,6 +338,7 @@ class GFAuthorizeNet {
         $subscription->billToZip = $form_data["zip"];
         $subscription->billToCountry = $form_data["country"];
         $subscription->orderInvoiceNumber = $invoice_number;
+        $subscription->orderDescription = $form_data["form_title"];
 
         return $subscription;
     }
@@ -391,6 +465,14 @@ class GFAuthorizeNet {
 
         $transaction = apply_filters("gform_authorizenet_transaction_pre_capture", $transaction, $form_data, $config, $form);
 
+        //Check if transaction is false after gform_authorizenet_transaction_pre_capture filter. If false, payment is not captured.
+        if(!$transaction)
+        {
+            self::log_debug("Funds not captured. Transaction was false after gform_authorizenet_transaction_pre_capture filer.");
+            $result = array("is_success" => true, "error_code" => "", "error_message" => "");
+            return $result;
+        }
+
         //deprecated
         $transaction = apply_filters("gform_authorizenet_before_single_payment", $transaction, $form_data, $config, $form);
 
@@ -433,6 +515,7 @@ class GFAuthorizeNet {
         }
 
         do_action("gform_authorizenet_post_capture", $result["is_success"], $form_data["amount"], $entry, $form, $config, $response);
+
         return $result;
     }
 
@@ -494,6 +577,8 @@ class GFAuthorizeNet {
                 do_action("gform_authorizenet_after_subscription_created", $subscription_id, $subscription->amount, $fee_amount);
             }
             else{
+
+                $void_text = "";
 
                 if(!empty($fee_amount) && $fee_amount > 0){
 
@@ -571,7 +656,7 @@ class GFAuthorizeNet {
             GFFormsModel::add_note($entry["id"], 0, "System", $message);
         }
 
-        RGFormsModel::update_lead($entry);
+        GFAPI::update_entry($entry);
 
         return $entry;
     }
@@ -582,7 +667,7 @@ class GFAuthorizeNet {
         $transaction = self::get_aim(self::get_local_api_settings($config));
 
         $transaction->amount = $form_data["amount"];
-        $transaction->card_num = $form_data["card_number"];
+        $transaction->card_num = self::remove_spaces_cc($form_data["card_number"]);
         $exp_date = str_pad($form_data["expiration_date"][0], 2, "0", STR_PAD_LEFT) . "-" . $form_data["expiration_date"][1];
         $transaction->exp_date = $exp_date;
         $transaction->card_code = $form_data["security_code"];
@@ -600,8 +685,7 @@ class GFAuthorizeNet {
         $transaction->invoice_num = empty($invoice_number) ? uniqid() : $invoice_number;
 
         foreach($form_data["line_items"] as $line_item)
-            $transaction->addLineItem($line_item["item_id"], self::truncate($line_item["item_name"], 31), self::truncate($line_item["item_description"], 255), $line_item["item_quantity"], GFCommon::to_number($line_item["item_unit_price"]), $line_item["item_taxable"]);
-
+            $transaction->addLineItem($line_item["item_id"], self::remove_spaces(self::truncate($line_item["item_name"], 31)) , self::truncate($line_item["item_description"], 255), $line_item["item_quantity"], GFCommon::to_number($line_item["item_unit_price"]), $line_item["item_taxable"]);
         return $transaction;
     }
 
@@ -610,7 +694,7 @@ class GFAuthorizeNet {
 
     public static function setup_cron(){
        if(!wp_next_scheduled("renewal_cron"))
-           wp_schedule_event(time(), "daily", "renewal_cron");
+           wp_schedule_event(time(), "hourly", "renewal_cron");
     }
 
     public static function process_renewals(){
@@ -704,7 +788,7 @@ class GFAuthorizeNet {
 
                          case "expired" :
                                $entry["payment_status"] = "Expired";
-                               RGFormsModel::update_lead($entry);
+                               GFAPI::update_entry($entry);
                                RGFormsModel::add_note($entry["id"], $user_id, $user_name, sprintf(__("Subscription has successfully completed its billing schedule. Subscriber Id: %s", "gravityformsauthorizenet"), $subscription_id));
 
                                do_action("gform_authorizenet_post_expire_subscription", $subscription_id, $entry);
@@ -715,7 +799,7 @@ class GFAuthorizeNet {
 
                          case "suspended":
                                $entry["payment_status"] = "Failed";
-                               RGFormsModel::update_lead($entry);
+                               GFAPI::update_entry($entry);
                                RGFormsModel::add_note($entry["id"], $user_id, $user_name, sprintf(__("Subscription is currently suspended due to a transaction decline, rejection, or error. Suspended subscriptions must be reactivated before the next scheduled transaction or the subscription will be terminated by the payment gateway. Subscriber Id: %s", "gravityforms"), $subscription_id));
 
                                do_action("gform_authorizenet_post_suspend_subscription", $subscription_id, $entry);
@@ -737,7 +821,7 @@ class GFAuthorizeNet {
 
                          default:
                               $entry["payment_status"] = "Failed";
-                              RGFormsModel::update_lead($entry);
+                              GFAPI::update_entry($entry);
                               RGFormsModel::add_note($entry["id"], $user_id, $user_name, sprintf(__("Subscription is currently suspended due to a transaction decline, rejection, or error. Suspended subscriptions must be reactivated before the next scheduled transaction or the subscription will be terminated by the payment gateway. Subscriber Id: %s", "gravityforms"), $subscription_id));
 
                               do_action("gform_authorizenet_post_suspend_subscription", $subscription_id, $entry);
@@ -1044,6 +1128,14 @@ class GFAuthorizeNet {
         <?php
     }
 
+    public static function auth_net_currencies($currencies){
+        $currencies = array(
+            "EUR" => array("name" => __("Euro", "gravityforms"), "symbol_left" => '', "symbol_right" => "&#8364;", "symbol_padding" => " ", "thousand_separator" => '.', "decimal_separator" => ',', "decimals" => 2),
+            "GBP" => array("name" => __("Pound Sterling", "gravityforms"), "symbol_left" => '&#163;', "symbol_right" => "", "symbol_padding" => " ", "thousand_separator" => ',', "decimal_separator" => '.', "decimals" => 2),
+            "USD" => array("name" => __("U.S. Dollar", "gravityforms"), "symbol_left" => '$', "symbol_right" => "", "symbol_padding" =>  "", "thousand_separator" => ',', "decimal_separator" => '.', "decimals" => 2)
+            );
+        return $currencies;
+    }
     public static function settings_page(){
 
         if(!class_exists("RGAuthorizeNetUpgrade"))
@@ -1153,12 +1245,19 @@ class GFAuthorizeNet {
             <?php if(GFCommon::current_user_can_any("gravityforms_authorizenet_uninstall")){ ?>
                 <div class="hr-divider"></div>
 
-                <h3><?php _e("Uninstall Authorize.Net Add-On", "gravityformsauthorizenet") ?></h3>
-                <div class="delete-alert"><?php _e("Warning! This operation deletes ALL Authorize.Net Feeds.", "gravityformsauthorizenet") ?>
-                    <?php
-                    $uninstall_button = '<input type="submit" name="uninstall" value="' . __("Uninstall Authorize.Net Add-On", "gravityformsauthorizenet") . '" class="button" onclick="return confirm(\'' . __("Warning! ALL Authorize.Net Feeds will be deleted. This cannot be undone. \'OK\' to delete, \'Cancel\' to stop", "gravityformsauthorizenet") . '\');"/>';
-                    echo apply_filters("gform_authorizenet_uninstall_button", $uninstall_button);
-                    ?>
+                <div class="hr-divider"></div>
+
+                    <h3><span><?php _e( 'Uninstall Add-On', 'gravityforms' ) ?></span></h3>
+
+
+                <div class="delete-alert alert_red">
+
+                    <h3><i class="fa fa-exclamation-triangle gf_invalid"></i>Warning</h3>
+
+                    <div class="gf_delete_notice" "=""><strong><?php _e("Warning! This operation deletes ALL Authorize.net Feeds.", "gravityformsauthorizenet") ?></strong><?php _e("If you continue, you will not be able to recover any Authorize.net data.", "gravityformsauthorizenet") ?>
+                    </div>
+
+                    <input type="submit" name="uninstall" value=" Uninstall Authorize.net Add-On" class="button" onclick="return confirm('Warning! ALL settings will be deleted. This cannot be undone. \'OK\' to delete, \'Cancel\' to stop');">              
                 </div>
             <?php } ?>
         </form>
@@ -2021,13 +2120,13 @@ class GFAuthorizeNet {
                     <div class="margin_vertical_10">
                         <label class="left_header" for="gf_authorizenet_api_login"><?php _e("API Login ID", "gravityformsauthorizenet"); ?> <?php gform_tooltip("authorizenet_api_login") ?></label>
                         <input class="size-1" id="gf_authorizenet_api_login" name="gf_authorizenet_api_login" value="<?php echo rgar($config["meta"],"api_login") ?>" />
-                        <img src="<?php echo self::get_base_url() ?>/images/<?php echo $config["meta"]["api_valid"] ? "tick.png" : "stop.png" ?>" border="0" alt="<?php echo $config["meta"]["api_message"]  ?>" title="<?php echo $config["meta"]["api_message"] ?>" style="display:<?php echo empty($config["meta"]["api_message"]) ? 'none;' : 'inline;' ?>" />
+                        <img src="<?php echo self::get_base_url() ?>/images/<?php echo rgar($config["meta"], "api_valid") ? "tick.png" : "stop.png" ?>" border="0" alt="<?php echo rgar($config["meta"], "api_message")  ?>" title="<?php echo rgar($config["meta"], "api_message") ?>" style="display:<?php echo empty($config["meta"]["api_message"]) ? 'none;' : 'inline;' ?>" />
                     </div>
 
                     <div class="margin_vertical_10">
                         <label class="left_header" for="gf_authorizenet_api_key"><?php _e("Transaction Key", "gravityformsauthorizenet"); ?> <?php gform_tooltip("paypalpro_api_key") ?></label>
                         <input class="size-1" id="gf_authorizenet_api_key" name="gf_authorizenet_api_key" value="<?php echo rgar($config["meta"],"api_key") ?>" />
-                        <img src="<?php echo self::get_base_url() ?>/images/<?php echo $config["meta"]["api_valid"] ? "tick.png" : "stop.png" ?>" border="0" alt="<?php echo $config["meta"]["api_message"] ?>" title="<?php echo $config["meta"]["api_message"] ?>" style="display:<?php echo empty($config["meta"]["api_message"]) ? 'none;' : 'inline;' ?>" />
+                        <img src="<?php echo self::get_base_url() ?>/images/<?php echo rgar($config["meta"], "api_valid") ? "tick.png" : "stop.png" ?>" border="0" alt="<?php echo rgar($config["meta"], "api_message") ?>" title="<?php echo rgar($config["meta"], "api_message") ?>" style="display:<?php echo empty($config["meta"]["api_message"]) ? 'none;' : 'inline;' ?>" />
                     </div>
 
                 </div>
@@ -2308,12 +2407,16 @@ class GFAuthorizeNet {
 
         //fields meta
         $form = RGFormsModel::get_form_meta($form_id);
+        $form_json = GFCommon::json_encode($form);
 
         $customer_fields = self::get_customer_information($form);
+        $customer_fields_json = json_encode($customer_fields);
         $recurring_amount_fields = self::get_product_options($form, "",true);
+        $recurring_amount_fields_json =  json_encode($recurring_amount_fields);
         $product_fields = self::get_product_options($form, "",false);
+        $product_fields_json = json_encode($product_fields);
 
-        die("EndSelectForm(" . GFCommon::json_encode($form) . ", '" . str_replace("'", "\'", $customer_fields) . "', '" . str_replace("'", "\'", $recurring_amount_fields) . "', '" . str_replace("'", "\'", $product_fields) . "');");
+        die("EndSelectForm(" . $form_json . ", " . $customer_fields_json . ", " . $recurring_amount_fields_json . ", " . $product_fields_json . ");");
     }
 
     public static function add_permissions(){
@@ -2436,6 +2539,9 @@ class GFAuthorizeNet {
         // get products
         $tmp_lead = RGFormsModel::create_lead($form);
         $products = GFCommon::get_product_fields($form, $tmp_lead);
+
+
+
         $form_data = array();
 
         // getting billing information
@@ -2449,7 +2555,7 @@ class GFAuthorizeNet {
         $form_data["country"] = rgpost('input_'. str_replace(".", "_",$config["meta"]["customer_fields"]["country"]));
 
         $card_field = self::get_creditcard_field($form);
-        $form_data["card_number"] = rgpost("input_{$card_field["id"]}_1");
+        $form_data["card_number"] = self::remove_spaces_cc(rgpost("input_{$card_field["id"]}_1"));
         $form_data["expiration_date"] = rgpost("input_{$card_field["id"]}_2");
         $form_data["security_code"] = rgpost("input_{$card_field["id"]}_3");
         $form_data["card_name"] = rgpost("input_{$card_field["id"]}_5");
@@ -2523,6 +2629,27 @@ class GFAuthorizeNet {
         }
 
         return array("amount" => $amount, "fee_amount" => $fee_amount, "line_items" => $line_items);
+    }
+
+    private static function remove_spaces($text){
+
+        $text = str_replace("\t", " ",$text);
+        $text = str_replace("\n", " ",$text);
+        $text = str_replace("\r", " ",$text);
+
+        return $text;
+
+    }
+
+    private static function remove_spaces_cc($text){
+
+        $text = str_replace("\t", "",$text);
+        $text = str_replace("\n", "",$text);
+        $text = str_replace("\r", "",$text);
+        $text = str_replace(" ", "",$text);
+
+        return $text;
+
     }
 
     private static function truncate($text, $max_chars){
@@ -2608,7 +2735,7 @@ class GFAuthorizeNet {
     private static function cancel_subscription($lead){
 
         $lead["payment_status"] = "Canceled";
-        RGFormsModel::update_lead($lead);
+        GFAPI::update_entry($lead);
 
         //loading data class
         $feed_id = gform_get_meta($lead["id"], "authorize.net_feed_id");
@@ -2734,7 +2861,7 @@ class GFAuthorizeNet {
             $field_label = RGFormsModel::get_label($field);
 
             $selected = $field_id == $selected_field ? "selected='selected'" : "";
-            $str .= "<option value='" . $field_id . "' ". $selected . ">" . $field_label . "</option>";
+            $str .= "<option value='" . $field_id . "' ". $selected . ">" . $field_label. "</option>";
         }
 
         if($form_total){
