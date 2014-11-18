@@ -43,27 +43,25 @@
 			<section class="top-navbar">				
 				<nav class="navbar navbar-default" role="navigation">
 					<div class="container-fluid">						
-						<div class="navbar-header">																	
-							<button type="button" class="navbar-toggle navbar-right" data-toggle="collapse" data-target=".navbar-primary-collapse">
-								<span class="sr-only"><?php _e('Toggle navigation', 'bootstrap-basic'); ?></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>									
-							</button>
-							<a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>">
-								<?php // echo esc_attr(get_bloginfo('name', 'display')); ?>
-								<img style="max-width:454px;" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png">
-							</a>					
+						<div class="navbar-header">	
+							<div class="col-xs-10">									
+								<a class="navbar-brand navbar-brand-small visible-xs" href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>">	
+									<img class="img-responsive" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo-sm.png">												
+								</a>	
+								<a class="navbar-brand navbar-brand-large hidden-xs visible-md visible-lg" href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>">		
+									<img class="" style="width:400px; height:auto; margin-top: 10px;" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png">
+								</a>												
+							</div>
+							<div class="col-xs-2 col-no-padding-xs">									
+								<button type="button" class="navbar-toggle navbar-right" data-toggle="collapse" data-target=".navbar-primary-collapse">
+									<span class="sr-only"><?php _e('Toggle navigation', 'bootstrap-basic'); ?></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>									
+								</button>									
+							</div>																					
 						</div>						
 						<div class="collapse navbar-collapse navbar-primary-collapse">
-							<div class="btn-header">
-<!-- 								<a class="btn btn-sm btn-secondary navbar-btn navbar-right hidden-xs" href="tel:9728988063" style="margin-left:10px;">
-									(972) 898-8063
-								</a>  
-								<a class="btn btn-sm btn-secondary navbar-btn navbar-right hidden-xs" href="/schedule">
-									Schedule Session
-								</a>  													   							
-							</div> -->
 							<?php wp_nav_menu(array('theme_location' => 'primary', 'container' => false, 'menu_class' => 'nav navbar-nav navbar-right', 'walker' => new BootstrapBasicMyWalkerNavMenu())); ?>
 						</div><!--.navbar-collapse-->
 					</div>
@@ -76,20 +74,18 @@
 
 			<!-- Mobile Landing Section -->
 			<section class="mobile-landing visible-xs col-xs-12">
-			    <div class="col-xs-6 col-no-padding-xs phone" style="padding-right:5px">
-				    <a class="btn btn-primary btn-lg btn-block" href="/schedule-inspection">
-				        (972) 492-7920
-				    </a> 
-			    </div>
-			    <div class="col-xs-6 col-no-padding-xs phone" style="padding-left:5px">
-				    <a class="btn btn-primary btn-lg btn-block" href="/schedule-inspection">
-				        (214) 390-2050
-				    </a> 
-			    </div>
-			    <div class="col-xs-12 col-no-padding-xs call-to-action">
-				    <a class="btn btn-danger btn-lg btn-block col-xs-12" href="/schedule-inspection" style="margin-top:0px">
-				        <i class="fa fa-calendar fa-1x"></i>
-				        Schedule Inspection
-				    </a>
-			    </div>
-			</section>			
+				<div class="row">
+				    <div class="col-xs-12">
+					    <a class="btn btn-secondary btn-block" href="/schedule-inspection" style="margin-top:18px">
+					        <i class="fa fa-phone fa-fw"></i>
+					        (972) 492-7920
+					    </a> 
+				    </div>
+				    <div class="col-xs-12 call-to-action">
+					    <a class="btn btn-secondary btn-block col-xs-12" href="/schedule" style="margin-top:0px">
+					        <i class="fa fa-calendar fa-fw"></i>
+					        Schedule Session
+					    </a>
+				    </div>
+				</div>
+			</section>		 	

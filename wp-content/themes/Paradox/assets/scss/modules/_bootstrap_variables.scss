@@ -277,8 +277,8 @@ $dropdown-link-active-bg:        inherit;
 
 // // Large screen / wide desktop
 // // Note: Deprecated $screen-lg and $screen-lg-desktop as of v3.0.1
-// $screen-lg:                  1200px;
-// $screen-lg-min:              $screen-lg;
+$screen-lg:                  1200px;
+$screen-lg-min:              $screen-lg;
 // $screen-lg-desktop:          $screen-lg-min;
 
 // // So media queries don't overlap when required, provide a maximum
@@ -297,7 +297,7 @@ $dropdown-link-active-bg:        inherit;
 // $grid-gutter-width:         30px;
 // // Navbar collapse
 // //** Point at which the navbar becomes uncollapsed.
-// $grid-float-breakpoint:     $screen-sm-min;
+$grid-float-breakpoint:     $screen-lg-min;
 // //** Point at which the navbar begins collapsing.
 // $grid-float-breakpoint-max: ($grid-float-breakpoint - 1);
 

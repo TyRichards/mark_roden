@@ -19,7 +19,7 @@ Template Name: Home
                     <a href="/schedule" class="btn btn-lg btn-secondary"><i class="fa fa-coffee fa-left"></i>Let's do coffee</a>                    
                 </div>              
             </div>
-            <div class="col-md-4 text-center">
+            <div class="col-md-4 text-center mast-img">
                 <img class="img-responsive" src="<?php echo get_template_directory_uri(); ?>/assets/images/mark.png" alt="<?php bloginfo('description'); ?>">
             </div>                
         </div>

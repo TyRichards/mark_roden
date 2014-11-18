@@ -6,6 +6,8 @@
 // Small devices (tablets, 768px and up)
 @media (min-width: $screen-sm-min) {
 
+    .navbar-toggle { margin-top: 0; }
+
     .navbar-collapse .navbar-nav li {
        border: none;
     }
@@ -55,6 +57,28 @@
 // Extra small devices only (phones, less than 768px)
 @media (max-width: $screen-xs-max) {
 
+    .primary-content .background {
+        display: none!important;
+    }
+
+    
+    .masthead h1 { margin-top: 25px; }
+
+    .top-navbar {
+        padding-top: 0;
+        padding-bottom: 0; 
+    }
+    .page-template-page-home-php {
+        .top-navbar { padding-bottom: 0; }
+        .navbar-header { height: 0; }
+    }        
+    header .navbar-brand {
+        position: static;
+        top: 0;
+        left: 0;
+        margin-top: 22px;
+        padding: 0;
+    }
     .clipboard-icon {        
         padding-left: 109px;
         padding-top: 13px;        
@@ -113,6 +137,7 @@
     
     .navbar-header .navbar-brand {
         width: 100%;
+        margin-left: 0;
     }
 
     .no-float-xs {
@@ -160,4 +185,41 @@
     .no-float-lg {
         float: none!important;
     }      
+}
+
+// Small Screen and smaller
+@media (max-width: $screen-sm-max) {
+
+    .credit-footer, .footer-credits { text-align: center; }
+    .footer-credits { margin-bottom: 15px; margin-top: 15px; }
+    .mast-img img { margin: 25px auto 0 auto; }
+
+}
+
+// Medium screens and smaller
+@media (max-width: $screen-md-max) {
+
+    .navbar-collapse .navbar-right { padding-right: 0; }
+    .navbar-collapse {
+        .navbar-nav {            
+            li {
+                background-color: darken($brand-primary, 25%);
+                a {                
+                    -moz-border-radius: 0;
+                    -webkit-border-radius: 0;
+                    border-radius: 0;
+                    border-bottom: 1px solid darken($brand-primary, 30%);
+                    border-top: 1px solid darken($brand-primary, 18%);
+                    &:hover {
+                        background-color: darken($brand-primary, 30%);
+                        color: #ffffff;
+                    }
+                }
+            }    
+            .current-menu-item a {
+                background-color: darken($brand-primary, 30%);
+            }
+            .menu-item-134, .menu-item-133 { display: none; }
+        }
+    }
 }
