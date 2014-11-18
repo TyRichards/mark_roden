@@ -9,7 +9,7 @@ Text Domain: Paradox
 Domain Path: /languages/
 */
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700|Rokkitt:400,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700|Rokkitt:400,700);
 /* line 11, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/bootstrap-sass-3.0.3.0/vendor/assets/stylesheets/bootstrap/_normalize.scss */
 article,
 aside,
@@ -10937,31 +10937,36 @@ body .gform_wrapper .gform_footer {
 }
 @media (max-width: 767px) {
   /* line 60, ../scss/partials/_states.scss */
+  .top-navbar {
+    height: 83px;
+  }
+
+  /* line 64, ../scss/partials/_states.scss */
   .primary-content .background {
     display: none !important;
   }
 
-  /* line 65, ../scss/partials/_states.scss */
+  /* line 69, ../scss/partials/_states.scss */
   .masthead h1 {
     margin-top: 25px;
   }
 
-  /* line 67, ../scss/partials/_states.scss */
+  /* line 71, ../scss/partials/_states.scss */
   .top-navbar {
     padding-top: 0;
     padding-bottom: 0;
   }
 
-  /* line 72, ../scss/partials/_states.scss */
+  /* line 76, ../scss/partials/_states.scss */
   .page-template-page-home-php .top-navbar {
     padding-bottom: 0;
   }
-  /* line 73, ../scss/partials/_states.scss */
+  /* line 77, ../scss/partials/_states.scss */
   .page-template-page-home-php .navbar-header {
     height: 0;
   }
 
-  /* line 75, ../scss/partials/_states.scss */
+  /* line 79, ../scss/partials/_states.scss */
   header .navbar-brand {
     position: static;
     top: 0;
@@ -10970,140 +10975,140 @@ body .gform_wrapper .gform_footer {
     padding: 0;
   }
 
-  /* line 82, ../scss/partials/_states.scss */
+  /* line 86, ../scss/partials/_states.scss */
   .clipboard-icon {
     padding-left: 109px;
     padding-top: 13px;
   }
 
-  /* line 87, ../scss/partials/_states.scss */
+  /* line 91, ../scss/partials/_states.scss */
   .footer-logo {
     padding-bottom: 25px;
     display: block;
   }
 
-  /* line 92, ../scss/partials/_states.scss */
+  /* line 96, ../scss/partials/_states.scss */
   .logos .container div {
     padding: 10px 75px;
   }
 
-  /* line 96, ../scss/partials/_states.scss */
+  /* line 100, ../scss/partials/_states.scss */
   .masthead, .primary-content, .more-foot, .small-footer, .main-col {
     padding-top: 25px;
     padding-bottom: 25px;
   }
 
-  /* line 103, ../scss/partials/_states.scss */
+  /* line 107, ../scss/partials/_states.scss */
   .body-content h1 {
     font-size: 37.8px;
   }
-  /* line 106, ../scss/partials/_states.scss */
+  /* line 110, ../scss/partials/_states.scss */
   .body-content h2 {
     font-size: 29.4px;
   }
-  /* line 109, ../scss/partials/_states.scss */
+  /* line 113, ../scss/partials/_states.scss */
   .body-content h3 {
     font-size: 23.8px;
   }
-  /* line 112, ../scss/partials/_states.scss */
+  /* line 116, ../scss/partials/_states.scss */
   .body-content h4 {
     font-size: 18.2px;
   }
-  /* line 115, ../scss/partials/_states.scss */
+  /* line 119, ../scss/partials/_states.scss */
   .body-content h5 {
     font-size: 13.6px;
   }
-  /* line 122, ../scss/partials/_states.scss */
+  /* line 126, ../scss/partials/_states.scss */
   .body-content p, .body-content ul, .body-content ol {
     margin: 25px 0 0 0;
   }
 
-  /* line 128, ../scss/partials/_states.scss */
+  /* line 132, ../scss/partials/_states.scss */
   .primary-content .btn, .primary-content .gform_button, .primary-content .archive .page-title, .archive .primary-content .page-title, .primary-content .more-link, .masthead .btn, .masthead .gform_button, .masthead .archive .page-title, .archive .masthead .page-title, .masthead .more-link, .logos .btn, .logos .gform_button, .logos .archive .page-title, .archive .logos .page-title, .logos .more-link, .footer .btn, .footer .gform_button, .footer .archive .page-title, .archive .footer .page-title, .footer .more-link {
     margin: 25px 0 0 0;
   }
 
-  /* line 133, ../scss/partials/_states.scss */
+  /* line 137, ../scss/partials/_states.scss */
   .col-no-padding-xs {
     padding-left: 0px;
     padding-right: 0px;
   }
 
-  /* line 138, ../scss/partials/_states.scss */
+  /* line 142, ../scss/partials/_states.scss */
   .navbar-header .navbar-brand {
     width: 100%;
     margin-left: 0;
   }
 
-  /* line 143, ../scss/partials/_states.scss */
+  /* line 147, ../scss/partials/_states.scss */
   .no-float-xs {
     float: none !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  /* line 154, ../scss/partials/_states.scss */
+  /* line 158, ../scss/partials/_states.scss */
   .col-no-padding-sm {
     padding-left: 0px;
     padding-right: 0px;
   }
 
-  /* line 159, ../scss/partials/_states.scss */
+  /* line 163, ../scss/partials/_states.scss */
   .no-float-sm {
     float: none !important;
   }
 }
 @media (min-width: 992px) and (max-width: 1199px) {
-  /* line 167, ../scss/partials/_states.scss */
+  /* line 171, ../scss/partials/_states.scss */
   .col-no-padding-md {
     padding-left: 0px;
     padding-right: 0px;
   }
 
-  /* line 172, ../scss/partials/_states.scss */
+  /* line 176, ../scss/partials/_states.scss */
   .no-float-md {
     float: none !important;
   }
 }
 @media (min-width: 1200px) {
-  /* line 180, ../scss/partials/_states.scss */
+  /* line 184, ../scss/partials/_states.scss */
   .col-no-padding-lg {
     padding-left: 0px;
     padding-right: 0px;
   }
 
-  /* line 185, ../scss/partials/_states.scss */
+  /* line 189, ../scss/partials/_states.scss */
   .no-float-lg {
     float: none !important;
   }
 }
 @media (max-width: 991px) {
-  /* line 193, ../scss/partials/_states.scss */
+  /* line 197, ../scss/partials/_states.scss */
   .credit-footer, .footer-credits {
     text-align: center;
   }
 
-  /* line 194, ../scss/partials/_states.scss */
+  /* line 198, ../scss/partials/_states.scss */
   .footer-credits {
     margin-bottom: 15px;
     margin-top: 15px;
   }
 
-  /* line 195, ../scss/partials/_states.scss */
+  /* line 199, ../scss/partials/_states.scss */
   .mast-img img {
     margin: 25px auto 0 auto;
   }
 }
 @media (max-width: 1199px) {
-  /* line 202, ../scss/partials/_states.scss */
+  /* line 206, ../scss/partials/_states.scss */
   .navbar-collapse .navbar-right {
     padding-right: 0;
   }
 
-  /* line 205, ../scss/partials/_states.scss */
+  /* line 209, ../scss/partials/_states.scss */
   .navbar-collapse .navbar-nav li {
     background-color: #123851;
   }
-  /* line 207, ../scss/partials/_states.scss */
+  /* line 211, ../scss/partials/_states.scss */
   .navbar-collapse .navbar-nav li a {
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
@@ -11111,16 +11116,16 @@ body .gform_wrapper .gform_footer {
     border-bottom: 1px solid #0d293c;
     border-top: 1px solid #184c6e;
   }
-  /* line 213, ../scss/partials/_states.scss */
+  /* line 217, ../scss/partials/_states.scss */
   .navbar-collapse .navbar-nav li a:hover {
     background-color: #0d293c;
     color: #ffffff;
   }
-  /* line 219, ../scss/partials/_states.scss */
+  /* line 223, ../scss/partials/_states.scss */
   .navbar-collapse .navbar-nav .current-menu-item a {
     background-color: #0d293c;
   }
-  /* line 222, ../scss/partials/_states.scss */
+  /* line 226, ../scss/partials/_states.scss */
   .navbar-collapse .navbar-nav .menu-item-134, .navbar-collapse .navbar-nav .menu-item-133 {
     display: none;
   }

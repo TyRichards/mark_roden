@@ -57,6 +57,10 @@
 // Extra small devices only (phones, less than 768px)
 @media (max-width: $screen-xs-max) {
 
+    .top-navbar {
+        height: 83px;
+    }
+
     .primary-content .background {
         display: none!important;
     }
