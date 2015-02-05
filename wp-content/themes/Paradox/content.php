@@ -17,6 +17,13 @@
 	</div><!-- .entry-summary -->
 	<?php } else { ?> 
 	<div class="entry-content">
+		
+		<?php if( get_field('youtube_video') ) { ?>
+			<div class="flex-video widescreen">                
+	            <iframe src="//www.youtube.com/embed/<?php the_field('youtube_video') ?>?autohide=1&amp;modestbranding=1&amp;rel=0&amp;showinfo=0" height="374" width="680" controls="2" allowfullscreen="" frameborder="0"></iframe>
+	        </div>
+	    <?php } ?>
+
 		<?php the_content(bootstrapBasicMoreLinkText()); ?> 
 		<div class="clearfix"></div>
 		<?php 
