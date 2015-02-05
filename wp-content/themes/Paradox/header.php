@@ -15,7 +15,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<meta name="description" content="<?php bloginfo('description'); ?>">
-		<meta name="author" content="Shelly Morgan">
+		<meta name="author" content="Mark Roden">
 		<title><?php wp_title('|', true, 'right'); ?></title>		
 		<link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/assets/images/favicon.png">
 		<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">	
@@ -29,6 +29,16 @@
 	<body <?php body_class(); ?>>
 
 		<!-- Google Analytics -->	
+			<script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-59398455-1', 'auto');
+			  ga('send', 'pageview');
+
+			</script>		
 
 		<!--[if lte IE 8]>
 			<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
@@ -76,9 +86,9 @@
 			<section class="mobile-landing visible-xs col-xs-12">
 				<div class="row">
 				    <div class="col-xs-12">
-					    <a class="btn btn-secondary btn-block" href="/schedule-inspection" style="margin-top:18px">
+					    <a class="btn btn-secondary btn-block" href="tel:9728988063" style="margin-top:18px">
 					        <i class="fa fa-phone fa-fw"></i>
-					        (972) 492-7920
+					        (972) 898-8063
 					    </a> 
 				    </div>
 				    <div class="col-xs-12 call-to-action">
