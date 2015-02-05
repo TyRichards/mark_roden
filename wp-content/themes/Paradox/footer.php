@@ -34,10 +34,10 @@
 			        	</div>	        	
 			        	<div class="col-md-4 text-center">
 			        		<ul class="list-inline">
-			        			<li><a href="#" title="Google Plus"><i class="fa fa-google-plus fa-2x"></i></a></li>
-			        			<li><a href="#" title="Twitter"><i class="fa fa-twitter fa-2x"></i></a></li>
-			        			<li><a href="#" title="Facebook"><i class="fa fa-facebook fa-2x"></i></a></li>
-			        			<li><a href="#" title="LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a></li>
+			        			<li><a href="https://plus.google.com/+MarkRodenTexas" title="Google Plus"><i class="fa fa-google-plus fa-2x"></i></a></li>
+			        			<li><a href="https://twitter.com/marklroden" title="Twitter"><i class="fa fa-twitter fa-2x"></i></a></li>
+			        			<li><a href="https://www.facebook.com/Dfwelp?fref=ts" title="Facebook"><i class="fa fa-facebook fa-2x"></i></a></li>
+			        			<li><a href="https://www.linkedin.com/in/markroden" title="LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a></li>
 			        		</ul>
 			        	</div>
 		        		<div class="col-md-4">
