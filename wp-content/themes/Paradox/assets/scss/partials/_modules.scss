@@ -738,3 +738,14 @@ background: #000000;
 .flex-video.widescreen {
     padding-bottom: 56%;
 }
+
+// Gravity Forms ////////
+
+.gform_footer.top_label { position: relative; }
+.gform_ajax_spinner {
+    position: absolute;
+    border-color: transparent!important;
+    margin-top: 15px;
+    right: 5%;
+    z-index: 10000!important;
+}
